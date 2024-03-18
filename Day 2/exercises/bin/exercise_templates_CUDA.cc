@@ -4,7 +4,11 @@
 
 
 
+#if (defined(__CUDA_ARCH__) && (__CUDA_ARCH__ > 0))
+#define __CUDA_DEVICE_CODE__
+#endif
 #define __CUDA_HOST_DEVICE__ __host__ __device__
+#define __CUDA_GLOBAL__ __global__
 #define __CUDA_HOST__ __host__
 #define __CUDA_DEVICE__ __device__
 // Fancy way to check an error in a CUDA function call
@@ -38,16 +42,26 @@ template<typename T> struct TestClass<TestClass<T>>{
 };
 
 template<typename T> __CUDA_HOST_DEVICE__ void print_value(T const& x){
-  printf("Value is %f.\n", static_cast<double>(x));
+#ifndef __CUDA_DEVICE_CODE__
+  printf("CPU printout: Value is %f.\n", static_cast<double>(x));
+#else
+  printf("GPU printout: Value is %f.\n", static_cast<double>(x));
+#endif
 }
 template<> __CUDA_HOST_DEVICE__ void print_value(float const& x){
-  printf("Twice the value of the float %f is %f.\n", x, 2*x);
+#ifndef __CUDA_DEVICE_CODE__
+  printf("CPU printout: Twice the value of the float %f is %f.\n", x, 2*x);
+#else
+  printf("GPU printout: Twice the value of the float %f is %f.\n", x, 2*x);
+#endif
 }
 
 
 template<typename T> __CUDA_GLOBAL__ void print_value_kernel(unsigned int n, T* data){
   unsigned int const i = blockIdx.x*blockDim.x + threadIdx.x;
-  if (i < n) print_value(data[i]);
+  if (i < n){
+    print_value(data[i]);
+  }
 }
 
 
