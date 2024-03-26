@@ -4,7 +4,7 @@ EXEDIR               = $(COMPILEPATH)/executables/
 
 CXX           = g++
 CXXVEROPT     = -std=c++20
-CXXOPTIM      = -O2
+CXXOPTIM      = -O3
 CXXDEFINES    =
 CXXFLAGS      = -fPIC -g $(CXXOPTIM) $(CXXVEROPT)
 EXEFLAGS      = $(CXXFLAGS)

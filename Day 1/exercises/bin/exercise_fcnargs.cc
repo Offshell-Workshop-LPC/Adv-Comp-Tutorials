@@ -27,13 +27,15 @@ void print_test(double const&& d){
 }
 
 void print_test(int const* n){
-  if (n == nullptr) std::cout << "nullptr (pointer to constant)" << std::endl;
-  else std::cout << "Passed pointer " << n << " to constant value *n = " << *n << std::endl;
+  using namespace std;
+  if (n == nullptr) cout << "nullptr (pointer to constant)" << endl;
+  else cout << "Passed pointer " << n << " to constant value *n = " << *n << endl;
   //*n = 9; // Error: n is const
 }
 void print_test(int* const& n){
-  if (n == nullptr) std::cout << "nullptr (constant reference to pointer)" << std::endl;
-  else std::cout << "Passed a constant reference to a pointer " << n << " with value *n = " << *n << std::endl;
+  using namespace std;
+  if (n == nullptr) cout << "nullptr (constant reference to pointer)" << endl;
+  else cout << "Passed a constant reference to a pointer " << n << " with value *n = " << *n << endl;
   *n = 9; // This WILL work! Why?
 }
 
